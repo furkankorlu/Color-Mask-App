@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ColorMaskApp</class>
+ <widget class="QMainWindow" name="ColorMaskApp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1463</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QSlider" name="lower_slide">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>530</y>
+      <width>30</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>180</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+    <property name="value">
+     <number>90</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="webcam">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>640</width>
+      <height>480</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QSlider" name="upper_slide">
+    <property name="geometry">
+     <rect>
+      <x>1100</x>
+      <y>530</y>
+      <width>30</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>180</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+    <property name="value">
+     <number>130</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="mask">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>10</y>
+      <width>640</width>
+      <height>480</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lower_label">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>760</y>
+      <width>150</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lower:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="upper_label">
+    <property name="geometry">
+     <rect>
+      <x>1250</x>
+      <y>760</y>
+      <width>150</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Upper:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="hsv">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>510</y>
+      <width>600</width>
+      <height>300</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QSlider" name="lower_slides">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>530</y>
+      <width>30</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="value">
+     <number>140</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="lower_slidev">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>530</y>
+      <width>30</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="value">
+     <number>140</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="upper_slides">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>530</y>
+      <width>30</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="value">
+     <number>255</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QSlider" name="upper_slidev">
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>530</y>
+      <width>30</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="value">
+     <number>255</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbdetect">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>820</y>
+      <width>151</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nesne Tespit Yapılsın</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbcam">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>820</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cam</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbhsv">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>820</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>HSV Renk Tespit</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="hsvlabel">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>820</y>
+      <width>150</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>HSV:</string>
+    </property>
+   </widget>
+   <zorder>lower_slide</zorder>
+   <zorder>upper_slide</zorder>
+   <zorder>mask</zorder>
+   <zorder>lower_label</zorder>
+   <zorder>upper_label</zorder>
+   <zorder>lower_slides</zorder>
+   <zorder>lower_slidev</zorder>
+   <zorder>upper_slides</zorder>
+   <zorder>upper_slidev</zorder>
+   <zorder>cbdetect</zorder>
+   <zorder>webcam</zorder>
+   <zorder>hsv</zorder>
+   <zorder>cbcam</zorder>
+   <zorder>cbhsv</zorder>
+   <zorder>hsvlabel</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1463</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionresim">
+   <property name="text">
+    <string>resim</string>
+   </property>
+  </action>
+  <action name="actionrr">
+   <property name="text">
+    <string>rr</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
