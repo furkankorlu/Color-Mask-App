@@ -88,6 +88,27 @@ class myApp(QtWidgets.QMainWindow):
         # Maskelenmiş görüntüyü orijinal görüntüyle birleştirerek renkli maskeleme yap
         masked_frame = cv.bitwise_and(frame, frame, mask=mask)
 
+        if self.ui.cbdetect.isChecked():
+
+            canny = cv.Canny(mask,100,200)
+            
+            contours, hierarchy = cv.findContours(canny, cv.RETR_TREE, cv.CHAIN_APPROX_NONE) 
+
+            for cont in contours:
+
+                if cv.contourArea(cont) > 50:
+                    # print(cont)
+                    cv.drawContours(masked_frame,cont,-1,(0,0,255),2,8)
+
+                    x,y,w,h = cv.boundingRect(cont)
+
+                    cv.rectangle(masked_frame,(x,y),(x+w,y+h),(0,0,255),2)
+
+                    # rect = cv.minAreaRect(cont)
+                    # box = cv.boxPoints(rect)
+                    # box = np.int0(box)
+                    # cv.drawContours(masked_frame,[box],0,(255,0,0),2)
+
         return masked_frame
     
     def update_color_mask(self):
@@ -101,7 +122,7 @@ class myApp(QtWidgets.QMainWindow):
         self.camera.release()
         self.timer.stop()
         super().closeEvent(event)
-        
+
 def app():
     app = QtWidgets.QApplication(sys.argv)
     win = myApp()
