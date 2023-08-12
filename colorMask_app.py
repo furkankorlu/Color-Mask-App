@@ -21,6 +21,14 @@ class myApp(QtWidgets.QMainWindow):
         self.ui.cbcam.stateChanged.connect(self.show_state)
         self.ui.cbhsv.stateChanged.connect(self.show_state)
 
+        self.ui.lower_slide.valueChanged.connect(self.update_color_mask)
+        self.ui.lower_slides.valueChanged.connect(self.update_color_mask)
+        self.ui.lower_slidev.valueChanged.connect(self.update_color_mask)
+
+        self.ui.upper_slide.valueChanged.connect(self.update_color_mask)
+        self.ui.upper_slides.valueChanged.connect(self.update_color_mask)
+        self.ui.upper_slidev.valueChanged.connect(self.update_color_mask)
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.capture_image)
         self.timer.start(33)  # 30 FPS (30 kare/saniye) için 33 ms gecikme
@@ -63,7 +71,7 @@ class myApp(QtWidgets.QMainWindow):
             image2 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
             pixmap2 = QPixmap.fromImage(image2).scaled(self.ui.mask.size(), Qt.AspectRatioMode.KeepAspectRatio)
             self.ui.mask.setPixmap(pixmap2)
-            
+
     def color_mask(self, frame):
         # Belirli renk aralığında maskeleme işlemi gerçekleştirilir
         # İşlem sonucu maskeleme yapılmış görüntü döndürülür
@@ -81,7 +89,19 @@ class myApp(QtWidgets.QMainWindow):
         masked_frame = cv.bitwise_and(frame, frame, mask=mask)
 
         return masked_frame
+    
+    def update_color_mask(self):
+        self.capture_image()
+        
+        # Kaydırıcı değerlerini göster
+        self.ui.lower_label.setText(f"Lower: {[self.ui.lower_slide.value(),self.ui.lower_slides.value(),self.ui.lower_slidev.value()]}")
+        self.ui.upper_label.setText(f"Upper: {[self.ui.upper_slide.value(),self.ui.upper_slides.value(),self.ui.upper_slidev.value()]}")
 
+    def closeEvent(self, event):
+        self.camera.release()
+        self.timer.stop()
+        super().closeEvent(event)
+        
 def app():
     app = QtWidgets.QApplication(sys.argv)
     win = myApp()
