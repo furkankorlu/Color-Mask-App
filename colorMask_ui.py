@@ -120,7 +120,7 @@ class Ui_ColorMaskApp(object):
 
     def retranslateUi(self, ColorMaskApp):
         _translate = QtCore.QCoreApplication.translate
-        ColorMaskApp.setWindowTitle(_translate("ColorMaskApp", "MainWindow"))
+        ColorMaskApp.setWindowTitle(_translate("ColorMaskApp", "Color Mask App"))
         self.lower_label.setText(_translate("ColorMaskApp", "Lower:"))
         self.upper_label.setText(_translate("ColorMaskApp", "Upper:"))
         self.cbdetect.setText(_translate("ColorMaskApp", "Nesne Tespit Yapılsın"))
