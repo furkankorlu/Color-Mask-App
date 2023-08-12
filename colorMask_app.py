@@ -48,6 +48,12 @@ class myApp(QtWidgets.QMainWindow):
                 pixmap1 = QPixmap.fromImage(image1).scaled(self.ui.webcam.size(), Qt.AspectRatioMode.KeepAspectRatio)
                 self.ui.webcam.setPixmap(pixmap1)
 
+                # label2: Belirli renk aralığında maskeleme
+                masked_frame = self.color_mask(frame)  # Belirli renk aralığında maskeleme işlemi
+                image2 = QImage(masked_frame.data, masked_frame.shape[1], masked_frame.shape[0], QImage.Format_RGB888).rgbSwapped()
+                pixmap2 = QPixmap.fromImage(image2).scaled(self.ui.mask.size(), Qt.AspectRatioMode.KeepAspectRatio)
+                self.ui.mask.setPixmap(pixmap2)
+
         elif not(self.ui.cbcam.isChecked()):
             # webcam off
             image1 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
@@ -57,6 +63,24 @@ class myApp(QtWidgets.QMainWindow):
             image2 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
             pixmap2 = QPixmap.fromImage(image2).scaled(self.ui.mask.size(), Qt.AspectRatioMode.KeepAspectRatio)
             self.ui.mask.setPixmap(pixmap2)
+            
+    def color_mask(self, frame):
+        # Belirli renk aralığında maskeleme işlemi gerçekleştirilir
+        # İşlem sonucu maskeleme yapılmış görüntü döndürülür
+        
+        lower_color = np.array([self.ui.lower_slide.value(),self.ui.lower_slides.value(),self.ui.lower_slidev.value()])
+        upper_color = np.array([self.ui.upper_slide.value(),self.ui.upper_slides.value(),self.ui.upper_slidev.value()])
+
+        blur = cv.GaussianBlur(frame,(3,3),0)
+        hsv = cv.cvtColor(blur,cv.COLOR_BGR2HSV)
+
+        # Belirli renk aralığındaki pikselleri maskele
+        mask = cv.inRange(hsv, lower_color, upper_color)
+
+        # Maskelenmiş görüntüyü orijinal görüntüyle birleştirerek renkli maskeleme yap
+        masked_frame = cv.bitwise_and(frame, frame, mask=mask)
+
+        return masked_frame
 
 def app():
     app = QtWidgets.QApplication(sys.argv)
