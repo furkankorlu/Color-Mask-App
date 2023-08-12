@@ -51,7 +51,7 @@ class myApp(QtWidgets.QMainWindow):
                 s = hsv[y, x, 1]
                 v = hsv[y, x, 2]
                 # print(f"H:{h} S:{s} V:{v}")
-                self.ui.hsvlabel.setText(f"HSV:[{h,s,v}]")
+                self.ui.hsvlabel.setText(f"HSV:[{h},{s},{v}]")
 
             elif not(self.ui.cbhsv.isChecked()):
                 cv.destroyAllWindows()
