@@ -32,11 +32,31 @@ class myApp(QtWidgets.QMainWindow):
 
     def capture_image(self):
         img = self.img
+        ret, frame = self.camera.read()
+        cam_off_img = self.cam_off_img
 
         # label3: Hsv renk spektrum fotografi
         image3 = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888).rgbSwapped()
         pixmap3 = QPixmap.fromImage(image3).scaled(self.ui.hsv.size(), Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.hsv.setPixmap(pixmap3)
+
+        if self.ui.cbcam.isChecked():
+            if ret:
+                # label1: Orjinal görüntü
+                frame = cv.flip(frame,1)
+                image1 = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888).rgbSwapped()
+                pixmap1 = QPixmap.fromImage(image1).scaled(self.ui.webcam.size(), Qt.AspectRatioMode.KeepAspectRatio)
+                self.ui.webcam.setPixmap(pixmap1)
+
+        elif not(self.ui.cbcam.isChecked()):
+            # webcam off
+            image1 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
+            pixmap1 = QPixmap.fromImage(image1).scaled(self.ui.webcam.size(), Qt.AspectRatioMode.KeepAspectRatio)
+            self.ui.webcam.setPixmap(pixmap1)
+            # mask off
+            image2 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
+            pixmap2 = QPixmap.fromImage(image2).scaled(self.ui.mask.size(), Qt.AspectRatioMode.KeepAspectRatio)
+            self.ui.mask.setPixmap(pixmap2)
 
 def app():
     app = QtWidgets.QApplication(sys.argv)
