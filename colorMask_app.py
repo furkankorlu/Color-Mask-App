@@ -21,6 +21,10 @@ class myApp(QtWidgets.QMainWindow):
         self.ui.cbcam.stateChanged.connect(self.show_state)
         self.ui.cbhsv.stateChanged.connect(self.show_state)
 
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.capture_image)
+        self.timer.start(33)  # 30 FPS (30 kare/saniye) için 33 ms gecikme
+
     def show_state(self):
         print("\nDetect:",self.ui.cbdetect.isChecked())
         print("Cam:",self.ui.cbcam.isChecked())
