@@ -30,6 +30,14 @@ class myApp(QtWidgets.QMainWindow):
         print("Cam:",self.ui.cbcam.isChecked())
         print("Hsv:",self.ui.cbhsv.isChecked())
 
+    def capture_image(self):
+        img = self.img
+
+        # label3: Hsv renk spektrum fotografi
+        image3 = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888).rgbSwapped()
+        pixmap3 = QPixmap.fromImage(image3).scaled(self.ui.hsv.size(), Qt.AspectRatioMode.KeepAspectRatio)
+        self.ui.hsv.setPixmap(pixmap3)
+
 def app():
     app = QtWidgets.QApplication(sys.argv)
     win = myApp()
