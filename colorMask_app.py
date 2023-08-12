@@ -43,6 +43,24 @@ class myApp(QtWidgets.QMainWindow):
         ret, frame = self.camera.read()
         cam_off_img = self.cam_off_img
 
+        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+        def tiklama(click, x, y, flags, param):
+            if click == cv.EVENT_LBUTTONDOWN:
+                h = hsv[y, x, 0]
+                s = hsv[y, x, 1]
+                v = hsv[y, x, 2]
+                # print(f"H:{h} S:{s} V:{v}")
+                self.ui.hsvlabel.setText(f"HSV:[{h,s,v}]")
+
+            elif not(self.ui.cbhsv.isChecked()):
+                cv.destroyAllWindows()
+                
+        if self.ui.cbhsv.isChecked():
+            frameflip = cv.flip(frame,1)
+            cv.imshow("Frame", frameflip)
+            cv.setMouseCallback('Frame',tiklama)
+
         # label3: Hsv renk spektrum fotografi
         image3 = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888).rgbSwapped()
         pixmap3 = QPixmap.fromImage(image3).scaled(self.ui.hsv.size(), Qt.AspectRatioMode.KeepAspectRatio)
