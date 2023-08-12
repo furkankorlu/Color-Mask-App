@@ -17,6 +17,15 @@ class myApp(QtWidgets.QMainWindow):
         self.img = cv.imread("gyuw4.png")
         self.cam_off_img = cv.imread("camoff.png")
 
+        self.ui.cbdetect.stateChanged.connect(self.show_state)
+        self.ui.cbcam.stateChanged.connect(self.show_state)
+        self.ui.cbhsv.stateChanged.connect(self.show_state)
+
+    def show_state(self):
+        print("\nDetect:",self.ui.cbdetect.isChecked())
+        print("Cam:",self.ui.cbcam.isChecked())
+        print("Hsv:",self.ui.cbhsv.isChecked())
+
 def app():
     app = QtWidgets.QApplication(sys.argv)
     win = myApp()
