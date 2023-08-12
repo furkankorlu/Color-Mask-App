@@ -13,6 +13,10 @@ class myApp(QtWidgets.QMainWindow):
         self.ui = Ui_ColorMaskApp()
         self.ui.setupUi(self)
 
+        self.camera = cv.VideoCapture(0)
+        self.img = cv.imread("gyuw4.png")
+        self.cam_off_img = cv.imread("camoff.png")
+
 def app():
     app = QtWidgets.QApplication(sys.argv)
     win = myApp()
