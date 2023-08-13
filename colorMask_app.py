@@ -14,8 +14,8 @@ class myApp(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         self.camera = cv.VideoCapture(0)
-        self.img = cv.imread("gyuw4.png")
-        self.cam_off_img = cv.imread("camoff.png")
+        self.img = cv.imread("Color Mask App/gyuw4.png")
+        self.cam_off_img = cv.imread("Color Mask App/camoff.png")
 
         self.ui.cbdetect.stateChanged.connect(self.show_state)
         self.ui.cbcam.stateChanged.connect(self.show_state)
@@ -58,8 +58,8 @@ class myApp(QtWidgets.QMainWindow):
                 
         if self.ui.cbhsv.isChecked():
             frameflip = cv.flip(frame,1)
-            cv.imshow("Frame", frameflip)
-            cv.setMouseCallback('Frame',tiklama)
+            cv.imshow("HSV Renk Tespit", frameflip)
+            cv.setMouseCallback('HSV Renk Tespits',tiklama)
 
         # label3: Hsv renk spektrum fotografi
         image3 = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888).rgbSwapped()
