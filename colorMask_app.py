@@ -33,33 +33,30 @@ class myApp(QtWidgets.QMainWindow):
         self.timer.timeout.connect(self.capture_image)
         self.timer.start(33)  # 30 FPS (30 kare/saniye) için 33 ms gecikme
 
+        self.ui.webcam.mousePressEvent = self.mouse_click_event
+
+        # Başlangıçta değerler labellarının boş gösterilmemesi için 
+        if not(self.ui.cbhsv.isChecked()):
+            self.ui.hsvlabel.setText("HSV Tespit : KAPALI")
+    
+        self.ui.lower_label.setText(f"Lower: {[self.ui.lower_slide.value(),self.ui.lower_slides.value(),self.ui.lower_slidev.value()]}")
+        self.ui.upper_label.setText(f"Upper: {[self.ui.upper_slide.value(),self.ui.upper_slides.value(),self.ui.upper_slidev.value()]}")
+
     def show_state(self):
         print("\nDetect:",self.ui.cbdetect.isChecked())
         print("Cam:",self.ui.cbcam.isChecked())
         print("Hsv:",self.ui.cbhsv.isChecked())
 
+        # Hsv label'ı güncellemesi
+        if self.ui.cbhsv.isChecked():
+            self.ui.hsvlabel.setText("HSV Tespit : AÇIK")
+        if not(self.ui.cbhsv.isChecked()):
+            self.ui.hsvlabel.setText("HSV Tespit : KAPALI")
+
     def capture_image(self):
         img = self.img
         ret, frame = self.camera.read()
         cam_off_img = self.cam_off_img
-
-        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-
-        def tiklama(click, x, y, flags, param):
-            if click == cv.EVENT_LBUTTONDOWN:
-                h = hsv[y, x, 0]
-                s = hsv[y, x, 1]
-                v = hsv[y, x, 2]
-                # print(f"H:{h} S:{s} V:{v}")
-                self.ui.hsvlabel.setText(f"HSV:[{h},{s},{v}]")
-
-            elif not(self.ui.cbhsv.isChecked()):
-                cv.destroyAllWindows()
-                
-        if self.ui.cbhsv.isChecked():
-            frameflip = cv.flip(frame,1)
-            cv.imshow("Frame", frameflip)
-            cv.setMouseCallback('Frame',tiklama)
 
         # label3: Hsv renk spektrum fotografi
         image3 = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888).rgbSwapped()
@@ -80,6 +77,7 @@ class myApp(QtWidgets.QMainWindow):
                 pixmap2 = QPixmap.fromImage(image2).scaled(self.ui.mask.size(), Qt.AspectRatioMode.KeepAspectRatio)
                 self.ui.mask.setPixmap(pixmap2)
 
+        # Cam görüntüsünün labelda gösterilmemesi
         elif not(self.ui.cbcam.isChecked()):
             # webcam off
             image1 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
@@ -89,7 +87,7 @@ class myApp(QtWidgets.QMainWindow):
             image2 = QImage(cam_off_img.data, cam_off_img.shape[1], cam_off_img.shape[0], QImage.Format_RGB888).rgbSwapped()
             pixmap2 = QPixmap.fromImage(image2).scaled(self.ui.mask.size(), Qt.AspectRatioMode.KeepAspectRatio)
             self.ui.mask.setPixmap(pixmap2)
-
+       
     def color_mask(self, frame):
         # Belirli renk aralığında maskeleme işlemi gerçekleştirilir
         # İşlem sonucu maskeleme yapılmış görüntü döndürülür
@@ -115,7 +113,6 @@ class myApp(QtWidgets.QMainWindow):
             for cont in contours:
 
                 if cv.contourArea(cont) > 50:
-                    # print(cont)
                     cv.drawContours(masked_frame,cont,-1,(0,0,255),2,8)
 
                     x,y,w,h = cv.boundingRect(cont)
@@ -129,9 +126,24 @@ class myApp(QtWidgets.QMainWindow):
 
         return masked_frame
     
+    def mouse_click_event(self, event):
+        ret, frame = self.camera.read()
+        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+        if self.ui.cbhsv.isChecked():
+            x = event.x()
+            y = event.y()
+            h = hsv[y, x, 0]
+            s = hsv[y, x, 1]
+            v = hsv[y, x, 2]
+
+            # print(f"H:{h} S:{s} V:{v}")
+            # print(f"Cordinats: ({x}, {y})")
+            self.ui.hsvlabel.setText(f"HSV:[{h},{s},{v}]")
+ 
     def update_color_mask(self):
         self.capture_image()
-        
+
         # Kaydırıcı değerlerini göster
         self.ui.lower_label.setText(f"Lower: {[self.ui.lower_slide.value(),self.ui.lower_slides.value(),self.ui.lower_slidev.value()]}")
         self.ui.upper_label.setText(f"Upper: {[self.ui.upper_slide.value(),self.ui.upper_slides.value(),self.ui.upper_slidev.value()]}")
