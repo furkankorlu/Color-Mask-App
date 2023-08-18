@@ -33,7 +33,6 @@ class myApp(QtWidgets.QMainWindow):
         self.timer.timeout.connect(self.capture_image)
         self.timer.start(33)  # 30 FPS (30 kare/saniye) için 33 ms gecikme
 
-        self.ui.webcam.mousePressEvent = self.mouse_click_event
 
         # Başlangıçta değerler labellarının boş gösterilmemesi için 
         if not(self.ui.cbhsv.isChecked()):
@@ -57,6 +56,25 @@ class myApp(QtWidgets.QMainWindow):
         img = self.img
         ret, frame = self.camera.read()
         cam_off_img = self.cam_off_img
+
+        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+        def tiklama(click, x, y, flags, param):
+            if click == cv.EVENT_LBUTTONDOWN:
+                h = hsv[y, x, 0]
+                s = hsv[y, x, 1]
+                v = hsv[y, x, 2]
+                # print(f"H:{h} S:{s} V:{v}")
+                self.ui.hsvlabel.setText(f"HSV:[{h},{s},{v}]")
+
+            elif not(self.ui.cbhsv.isChecked()):
+                cv.destroyAllWindows()
+                
+        if self.ui.cbhsv.isChecked():
+            frameflip = cv.flip(frame,1)
+            cv.imshow("Frame", frameflip)
+            cv.setMouseCallback('Frame',tiklama)
+
 
         # label3: Hsv renk spektrum fotografi
         image3 = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888).rgbSwapped()
@@ -126,20 +144,6 @@ class myApp(QtWidgets.QMainWindow):
 
         return masked_frame
     
-    def mouse_click_event(self, event):
-        ret, frame = self.camera.read()
-        hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-
-        if self.ui.cbhsv.isChecked():
-            x = event.x()
-            y = event.y()
-            h = hsv[y, x, 0]
-            s = hsv[y, x, 1]
-            v = hsv[y, x, 2]
-
-            # print(f"H:{h} S:{s} V:{v}")
-            # print(f"Cordinats: ({x}, {y})")
-            self.ui.hsvlabel.setText(f"HSV:[{h},{s},{v}]")
  
     def update_color_mask(self):
         self.capture_image()
