@@ -68,7 +68,7 @@ class myApp(QtWidgets.QMainWindow):
                 self.ui.hsvlabel.setText(f"HSV:[{h},{s},{v}]")
 
             elif not(self.ui.cbhsv.isChecked()):
-                cv.destroyAllWindows()
+                cv.destroyAllWindows()  
                 
         if self.ui.cbhsv.isChecked():
             frameflip = cv.flip(frame,1)
