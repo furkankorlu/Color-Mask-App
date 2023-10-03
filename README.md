@@ -12,7 +12,7 @@
 
 - The image taken from the camera is converted into HSV color space to be masked.
 
-## <font color="HoneyDew">**HSV Colorspace**</font>
+### <font color="HoneyDew">**HSV Colorspace**</font>
 
 - Defines color with the terms **Hue, Saturnation** and **Value**. Spaces such as *RGB, BGR* express a mixture of colors, while *HSV* space uses color, saturation and brightness values. While saturation determines the vitality of color, brightness refers to the 	luminosity of color.
 
